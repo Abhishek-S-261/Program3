@@ -4,19 +4,18 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.Calendar;
 
+// Base class
 class Person {
-    private String name;
+    protected String name;
 
     public Person(String name) {
         this.name = name;
     }
 
-    // Method to display person's name
     public void displayName() {
         System.out.println("Name: " + name);
     }
 
-    // Method to display person's age from date of birth
     public void displayAge(String dobStr) {
         SimpleDateFormat formatter;
         if (dobStr.contains("-") && dobStr.indexOf('-') == 2) {
@@ -31,11 +30,10 @@ class Person {
             dobCal.setTime(dob);
 
             Calendar today = Calendar.getInstance();
-
             int age = today.get(Calendar.YEAR) - dobCal.get(Calendar.YEAR);
 
             if (today.get(Calendar.DAY_OF_YEAR) < dobCal.get(Calendar.DAY_OF_YEAR)) {
-                age--; // Not yet had birthday this year
+                age--;
             }
 
             System.out.println("Age: " + age + " years");
@@ -45,20 +43,48 @@ class Person {
     }
 }
 
-public class Person1 {
+// Derived class
+class Employee extends Person {
+    private int empId;
+    private double salary;
+
+    public Employee(String name, int empId, double salary) {
+        super(name);
+        this.empId = empId;
+        this.salary = salary;
+    }
+
+    public void displayEmployeeDetails() {
+        System.out.println("Employee ID: " + empId);
+        System.out.println("Salary: ₹" + salary);
+    }
+}
+
+// Main class
+public class Person1{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter name: ");
+        System.out.print("Enter employee name: ");
         String name = scanner.nextLine();
 
-        Person person = new Person(name);
-        person.displayName();
+        System.out.print("Enter employee ID: ");
+        int empId = scanner.nextInt();
+
+        System.out.print("Enter salary: ");
+        double salary = scanner.nextDouble();
+        scanner.nextLine(); // consume leftover newline
 
         System.out.print("Enter date of birth (DD-MM-YYYY or YYYY-MM-DD): ");
         String dob = scanner.nextLine();
 
-        person.displayAge(dob);
+        // Create Employee object
+        Employee emp = new Employee(name, empId, salary);
+
+        // Display information
+        emp.displayName();
+        emp.displayAge(dob);
+        emp.displayEmployeeDetails();
 
         scanner.close();
     }
